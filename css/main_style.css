@@ -3,7 +3,8 @@
   font-family: "Source Sans Pro"; }
 
 body, html {
-  background-color: #384047; }
+  background-color: #384047;
+  height: 100%; }
 
 .tag {
   display: block;
@@ -19,7 +20,8 @@ body, html {
 
 .selected {
   border: 3px solid #69CDFF;
-  line-height: 15px; }
+  line-height: 15px;
+  color: white; }
 
 .container {
   width: 100%; }
@@ -29,7 +31,7 @@ body, html {
     clear: both; }
 
 .tagContainer {
-  width: 40%;
+  width: 50%;
   height: auto;
   padding: 20px;
   display: flex;
@@ -41,7 +43,7 @@ body, html {
   overflow-y: auto; }
 
 .chartContainer {
-  width: 60%;
+  width: 50%;
   height: auto;
   float: right;
   margin-top: 150px; }

@@ -81,64 +81,55 @@ tagData.sort(descBy('tagRating'));
 
 ///////////////
 
-// Converting tag data to DOM elements
-var tagContainer = document.querySelector('.tagContainer');
-tagData.forEach(function(currentTagData, index) {
-	var newTagDOMEl = document.createElement('div');
-	newTagDOMEl.style.backgroundColor = shadeColor('#5ECF81', index * 3);
-	newTagDOMEl.className = 'tag';
-	newTagDOMEl.textContent =  currentTagData['tagName'];
-	tagContainer.appendChild(newTagDOMEl);
-});
+
 
 
 /// For the Chart 
 
-var data = [
-    {
-        value: 300,
-        color:"#F7464A",
-        highlight: "#FF5A5E",
-        label: "Red"
-    },
-    {
-        value: 50,
-        color: "#46BFBD",
-        highlight: "#5AD3D1",
-        label: "Green"
-    },
-    {
-        value: 100,
-        color: "#FDB45C",
-        highlight: "#FFC870",
-        label: "Yellow"
-    }
-];
+function Tag(tagName, tagRating, tagColor, tagDOM, tagIndex) {
+	this.tagName = tagName;
+	this.tagRating = tagRating;
+	this.tagColor = tagColor;
+	this.tagIndex = tagIndex;
+	this.tagDOM = tagDOM;
+}
+
+Tag.prototype.getColor = function() {
+	return this.tagColor;
+};
+
+Tag.prototype.getTagIndex = function() {
+	return this.tagIndex;
+};
+
+var chartColors = ["#AA78CA", "#FF6940", "#34ADD3", "#FF5363"];
+
+var chartData = [];
 
 var chartOptions = {
     //Boolean - Whether we should show a stroke on each segment
-    segmentShowStroke : false,
+    segmentShowStroke : true,
 
     //String - The colour of each segment stroke
-    segmentStrokeColor : "#fff",
+    segmentStrokeColor : "#384047",
 
     //Number - The width of each segment stroke
-    segmentStrokeWidth : 3,
+    segmentStrokeWidth : 4,
 
     //Number - The percentage of the chart that we cut out of the middle
-    percentageInnerCutout : 50, // This is 0 for Pie charts
+    percentageInnerCutout : 0, // This is 0 for Pie charts
 
     //Number - Amount of animation steps
     animationSteps : 100,
 
     //String - Animation easing effect
-    animationEasing : "easeOutQuint",
+    animationEasing : "easeInOutQuint",
 
     //Boolean - Whether we animate the rotation of the Doughnut
     animateRotate : true,
 
     //Boolean - Whether we animate scaling the Doughnut from the centre
-    animateScale : false,
+    animateScale : true,
 
     //String - A legend template
     legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
@@ -147,4 +138,49 @@ var chartOptions = {
 
 var chartView = document.getElementById("myChart");
 var ctx = chartView.getContext("2d");
-var myPieChart = new Chart(ctx).Pie(data,chartOptions);
+var pieChart = new Chart(ctx).Pie(chartData,chartOptions);
+
+
+
+function insertInChart(tagName, tagRating, segmentColor) {
+	var newData = {
+		value : 1000 * tagRating,
+		color : segmentColor,
+		highlight : "",
+		label : tagName
+	};
+	pieChart.addData(newData);
+	chartData.push(newData);
+}
+
+// Converting tag data to DOM elements
+var tagContainer = document.querySelector('.tagContainer');
+// Stores dom elements in the same order as the tagData objects are stored in other relevant array
+var tagDOMEls = [];
+tagData.forEach(function(currentTagData, index) {
+	var newTagDOMEl = document.createElement('div');
+	var tagColor = shadeColor('#5ECF81', index * 3);
+	newTagDOMEl.style.backgroundColor = tagColor;
+	newTagDOMEl.className = 'tag';
+	newTagDOMEl.textContent =  currentTagData['tagName'];
+	tagDOMEls.push(newTagDOMEl);
+	tagContainer.appendChild(newTagDOMEl);
+
+	newTagDOMEl.addEventListener('click', function(event) {
+		if(this.className.indexOf("selected") > -1){
+			console.log(chartData.length);
+			this.className = this.className.slice(0, this.className.indexOf("selected"));
+			chartData.splice(index, 1);
+			console.log(chartData.length);
+			pieChart.update();
+			return;
+		}
+		var selectedTagName = tagData[index]['tagName'];
+		var selectedTagRating = tagData[index]['tagRating'];
+		var segmentColor = chartColors[Math.floor(chartColors.length * Math.random())];
+		this.className = this.className + " selected";
+		this.style.backgroundColor = segmentColor;
+		insertInChart(selectedTagName, selectedTagRating, segmentColor);
+	});
+});
+
