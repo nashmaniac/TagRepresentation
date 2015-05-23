@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AACA,UAAU;EACT,gBAAgB,EAFL,OAAO",
+"sources": ["../sass/main_style.sass"],
+"names": [],
+"file": "main_style.css"
+}
