@@ -175,7 +175,6 @@
 		tagContainer.appendChild(newTagDOMEl);
 
 		newTagDOMEl.addEventListener('click', function(event) {
-			console.log(colorsPresentInChart);
 			if(this.className.indexOf("selected") > -1){
 				this.className = this.className.slice(0, this.className.indexOf("selected"));
 				var chartDataIndex;
