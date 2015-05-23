@@ -127,6 +127,9 @@
 	     // Number - Pixel radius of the tooltip border
 	    tooltipCornerRadius: 4,
 
+		// Array - Array of string names to attach tooltip events
+	    tooltipEvents: [""],
+
         onAnimationComplete: function(){
 	        this.showTooltip(this.segments, true);
 	    }
@@ -139,7 +142,6 @@
 	var chartView = document.getElementById("myChart");
 	var ctx = chartView.getContext("2d");
 	var pieChart = new Chart(ctx).Pie(chartData,chartOptions);
-
 
 
 	function insertInChart(tagName, tagRating, segmentColor) {
