@@ -116,7 +116,23 @@
 	    animateScale : true,
 
 	    //String - A legend template
-	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
+	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",
+
+	    tooltipTemplate: "<%if (label){%><%=label%><%}%>",
+
+	    showTooltips : false,
+
+	    tooltipFontFamily: "'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+	     // Number - Pixel radius of the tooltip border
+	    tooltipCornerRadius: 4,
+
+        onAnimationComplete: function(){
+	        this.showTooltip(this.segments, true);
+	    }
+
+
+
 
 	};
 
@@ -158,8 +174,8 @@
 					if(data.label === currentTagData['tagName'] && data.value === currentTagData['tagRating'])
 						chartDataIndex = currentIndex;
 				});
-				pieChart.removeData(chartDataIndex);
 				chartData.splice(chartDataIndex, 1);
+				pieChart.removeData(chartDataIndex);
 				this.style.backgroundColor = tagColor;
 				return;
 			}
