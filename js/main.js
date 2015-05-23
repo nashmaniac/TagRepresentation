@@ -164,6 +164,7 @@
 	var tagDOMEls = [];
 	// To cycle between pie chart segment colors
 	var colorIndex = 0;
+	var colorsPresentInChart = [];
 	tagData.forEach(function(currentTagData, index) {
 		var newTagDOMEl = document.createElement('div');
 		var tagColor = shadeColor('#5ECF81', index * 3);
@@ -174,6 +175,7 @@
 		tagContainer.appendChild(newTagDOMEl);
 
 		newTagDOMEl.addEventListener('click', function(event) {
+			console.log(colorsPresentInChart);
 			if(this.className.indexOf("selected") > -1){
 				this.className = this.className.slice(0, this.className.indexOf("selected"));
 				var chartDataIndex;
@@ -183,12 +185,18 @@
 				});
 				chartData.splice(chartDataIndex, 1);
 				pieChart.removeData(chartDataIndex);
+				colorsPresentInChart.splice(colorsPresentInChart.indexOf(this.style.backgroundColor), 1);
 				this.style.backgroundColor = tagColor;
 				return;
 			}
 			var selectedTagName = tagData[index]['tagName'];
 			var selectedTagRating = tagData[index]['tagRating'];
 			var segmentColor = chartColors[(colorIndex++) % chartColors.length];
+			while(true){
+				segmentColor = chartColors[(colorIndex++) % chartColors.length];
+				if(colorsPresentInChart.indexOf(segmentColor) === -1) break;
+			}
+			colorsPresentInChart.push(segmentColor);
 			this.className = this.className + " selected";
 			this.style.backgroundColor = segmentColor;
 			insertInChart(selectedTagName, selectedTagRating, segmentColor);
