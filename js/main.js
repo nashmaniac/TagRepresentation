@@ -86,7 +86,10 @@
 
 	/// For the Chart 
 
-	var chartColors = ["#AA78CA", "#FF6940", "#34ADD3", "#FF5363", "#8A7365", "#006FAD", "#51B46D"];
+
+	var chartColors = ["#AA78CA", "#FF6940", "#00BD94", "#FF5363", "#FF71A0", "#006FAD", "#51B46D", "#F7921E",
+		"#295D73", "#41C980", "#34ADD3", "#D34E53", "#E7EAEC", "#8A7365", "#FF8051"
+	];
 
 	var chartData = [];
 
@@ -159,6 +162,8 @@
 	var tagContainer = document.querySelector('.tagContainer');
 	// Stores dom elements in the same order as the tagData objects are stored in other relevant array
 	var tagDOMEls = [];
+	// To cycle between pie chart segment colors
+	var colorIndex = 0;
 	tagData.forEach(function(currentTagData, index) {
 		var newTagDOMEl = document.createElement('div');
 		var tagColor = shadeColor('#5ECF81', index * 3);
@@ -183,7 +188,7 @@
 			}
 			var selectedTagName = tagData[index]['tagName'];
 			var selectedTagRating = tagData[index]['tagRating'];
-			var segmentColor = chartColors[Math.floor(chartColors.length * Math.random())];
+			var segmentColor = chartColors[(colorIndex++) % chartColors.length];
 			this.className = this.className + " selected";
 			this.style.backgroundColor = segmentColor;
 			insertInChart(selectedTagName, selectedTagRating, segmentColor);
