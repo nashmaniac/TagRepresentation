@@ -5,9 +5,9 @@
 	var TAG_BG_COLOR = "#5ECF81";
 
 	////////////Extracting data from JSON
+	var dataUrl = 'http://ec2-23-20-32-78.compute-1.amazonaws.com/lyrics_tagger/v1/tags?trackID=74310319';
 
-
-	$.getJSON('http://ec2-23-20-32-78.compute-1.amazonaws.com/lyrics_tagger/v1/tags?trackID=74310319', function(loadedData) {
+	$.getJSON(dataUrl, function(loadedData) {
 		// remove the loader
 		$('.loader').addClass('hidden');
 		// once the data is loaded
