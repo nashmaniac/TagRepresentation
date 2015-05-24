@@ -1,36 +1,39 @@
 var tagData = [];
 var songData = [];
-var loadedData = {"message":{"header":{"status_code":200,"execute_time":0.045691013336182,"maintenance_id":0},"body":{"track_list":[{"track":{"track_id":83371564,"track_mbid":"45d81a45-b57f-4ad5-8896-273f8578a97e","track_isrc":"","track_spotify_id":"","track_soundcloud_id":206709736,"track_xboxmusic_id":"","track_name":"Bad Blood","track_name_translation_list":[],"track_rating":69,"track_length":244,"commontrack_id":46615074,"instrumental":0,"explicit":0,"has_lyrics":1,"has_subtitles":1,"num_favourite":989,"lyrics_id":11409636,"subtitle_id":5496822,"album_id":20797064,"album_name":"Bad Blood","artist_id":28705075,"artist_mbid":"","artist_name":"Taylor Swift feat. Kendrick Lamar","album_coverart_100x100":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331.jpg","album_coverart_350x350":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331_350_350.jpg","album_coverart_500x500":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331_500_500.jpg","album_coverart_800x800":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331_800_800.jpg","track_share_url":"https:\/\/www.musixmatch.com\/lyrics\/Taylor-Swift-feat-Kendrick-Lamar\/Bad-Blood","track_edit_url":"https:\/\/www.musixmatch.com\/lyrics\/Taylor-Swift-feat-Kendrick-Lamar\/Bad-Blood?utm_source=application&utm_campaign=api&utm_medium=mxm","commontrack_vanity_id":"Taylor-Swift-feat-Kendrick-Lamar\/Bad-Blood","restricted":0,"updated_time":"2015-05-18T13:54:38Z","primary_genres":{"music_genre_list":[]},"secondary_genres":{"music_genre_list":[]}}}]}}};
+// var loadedData = {"message":{"header":{"status_code":200,"execute_time":0.046993017196655,"maintenance_id":0},"body":{"track_list":[{"track":{"track_id":83371564,"track_mbid":"45d81a45-b57f-4ad5-8896-273f8578a97e","track_isrc":"","track_spotify_id":"","track_soundcloud_id":206709736,"track_xboxmusic_id":"","track_name":"Bad Blood","track_name_translation_list":[],"track_rating":69,"track_length":244,"commontrack_id":46615074,"instrumental":0,"explicit":0,"has_lyrics":1,"has_subtitles":1,"num_favourite":1017,"lyrics_id":11409636,"subtitle_id":5496822,"album_id":20797064,"album_name":"Bad Blood","artist_id":28705075,"artist_mbid":"","artist_name":"Taylor Swift feat. Kendrick Lamar","album_coverart_100x100":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331.jpg","album_coverart_350x350":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331_350_350.jpg","album_coverart_500x500":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331_500_500.jpg","album_coverart_800x800":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331_800_800.jpg","track_share_url":"https:\/\/www.musixmatch.com\/lyrics\/Taylor-Swift-feat-Kendrick-Lamar\/Bad-Blood","track_edit_url":"https:\/\/www.musixmatch.com\/lyrics\/Taylor-Swift-feat-Kendrick-Lamar\/Bad-Blood?utm_source=application&utm_campaign=api&utm_medium=mxm","commontrack_vanity_id":"Taylor-Swift-feat-Kendrick-Lamar\/Bad-Blood","restricted":0,"updated_time":"2015-05-18T13:54:38Z","primary_genres":{"music_genre_list":[]},"secondary_genres":{"music_genre_list":[]}}}]}}};
 $(document).ready(function() {
 	// Constants
 	var NOT_FOUND = -1;
 
-	var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=5&country=us&f_has_lyrics=1&apikey=";
+	var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=5&country=5&f_has_lyrics=1&apikey=1ded3ade3e63977aef9212b43320afb1&format=jsonp&callback=?";
 	var tagUrl = "http://ec2-23-20-32-78.compute-1.amazonaws.com/lyrics_tagger/v1/tags?trackID=";
 
 	var tagUrls = [];
-	// An array of objects, each object holding data of a single track
-	var trackDatas = loadedData.message.body.track_list;
-	trackDatas.forEach(function(trackData) {
-		var currentTrackId = trackData.track.track_id;
-		songData.push({
-			songName : trackData.track.track_name,
-			coverArt : trackData.track.album_coverart_350x350
-		});
-		tagUrls.push(tagUrl+currentTrackId);
-	});
+	$.getJSON(largeDataUrl, function(loadedData) {
+		// An array of objects, each object holding data of a single track
+		var trackDatas = loadedData.message.body.track_list;
+		trackDatas.forEach(function(trackData) {
+			var currentTrackId = trackData.track.track_id;
+			// Put data about the current track/song in the respective array
 
-	tagUrls.forEach(function(tagUrl) {
-		$.getJSON(tagUrl, function(currentTagData) {
-			// first all we will have to extract the two arrays out of this data
-			// both the arrays have same elements stored in respective order
-			var tagRatings = currentTagData.tags_rating; 
-			var tagNames = currentTagData.tags;
-			tagRatings.forEach(function(tagRating, index) {
-				addNewTagData(tagRating, tagNames[index]);
+			var currentTrackTagsUrl = tagUrl + currentTrackId;
+
+			// get data out of this url 
+			$.getJSON(currentTrackTagsUrl, function(currentTagData) {
+				// both the arrays have same elements stored in respective order
+				var tagRatings = currentTagData.tags_rating; 
+				var tagNames = currentTagData.tags;
+				tagRatings.forEach(function(tagRating, index) {
+					addNewTagData(tagRating, tagNames[index]);
+				});
+				// also assing the tagnames to the current track/song
+				songData.push({
+					songName : trackData.track.track_name,
+					tags : tagNames
+				});
+				
 			});
-		});	
-
+		});
 	});
 
 	// Pushes new data into the tagData Array, avoids duplicate data
@@ -62,11 +65,33 @@ $(document).ready(function() {
 $(document).ajaxStop(function() {
 	// hide the loader
 	$('.loader').addClass('hidden');
-
-
 	// Constants
 	var SELECTED_TAG_NAME = "selected";
 	var TAG_BG_COLOR = "#5ECF81";
+
+	// Show the top songs 
+
+	var songContainer = document.querySelector('.songContainer');
+	songData.forEach(function(song, index) {
+		var songDOM = document.createElement('div');
+		songDOM.className = 'song';
+		// create the rank div
+		var rankDOM = document.createElement('div');
+		rankDOM.className = 'rank';
+		rankDOM.textContent = index + 1;
+		// add this to the earlier thing 
+		songDOM.appendChild(rankDOM);
+		// create a span for this thing 
+		var songTitle = document.createElement('span');
+		songTitle.className = 'songTitle';
+		songTitle.textContent = song.songName;
+
+		songDOM.appendChild(songTitle);
+		songContainer.appendChild(songDOM);
+
+	});
+
+	///////////
 
 
 	// Rearranges the tag data array to descending order by the tag rating 
