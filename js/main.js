@@ -4,7 +4,7 @@ $(document).ready(function() {
 	// Constants
 	var NOT_FOUND = -1;
 
-	var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=10&country=us&f_has_lyrics=1&apikey=1ded3ade3e63977aef9212b43320afb1";
+	var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=10&country=us&f_has_lyrics=1&apikey=";
 	var tagUrl = "http://ec2-23-20-32-78.compute-1.amazonaws.com/lyrics_tagger/v1/tags?trackID=";
 
 	var tagUrls = [];
