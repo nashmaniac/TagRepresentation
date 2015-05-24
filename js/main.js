@@ -8,6 +8,8 @@
 
 
 	$.getJSON('http://ec2-23-20-32-78.compute-1.amazonaws.com/lyrics_tagger/v1/tags?trackID=74310319', function(loadedData) {
+		// remove the loader
+		$('.loader').addClass('hidden');
 		// once the data is loaded
 		// Track data from the API
 		var trackData = loadedData;
@@ -25,7 +27,7 @@
 
 		// Rearranges the tag data array to descending order by the tag rating 
 		tagData.sort(descBy('tagRating'));
-		
+
 		// Converting tag data to DOM elements
 		var tagContainer = document.querySelector('.tagContainer');
 		// To cycle between pie chart segment colors

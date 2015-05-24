@@ -54,3 +54,99 @@ body, html
 .pieChart 
 	margin  : 0 auto
 
+.hidden 
+	display : none
+
+// Loader, from : http://projects.lukehaas.me/css-loaders/ by lukehass
+
+$white: #ffffff
+
+.loader 
+	font-size: 90px
+	text-indent: -9999em
+	overflow: hidden
+	width: 1em
+	height: 1em
+	//If you use compass, instead of the line below you could use +border-radius($radius, $vertical-radius)
+	border-radius: 50%
+	margin: 3em auto
+	position: relative
+	//If you use compass, instead of the line below you could use +transform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
+	transform: translateZ(0)
+	animation: load6 1.7s infinite ease
+
+@-webkit-keyframes load6 
+	0% 
+		//If you use compass, instead of the line below you could use +transform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
+		transform: rotate(0deg)
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, 0 -0.83em 0 -0.42em $white, 0 -0.83em 0 -0.44em $white, 0 -0.83em 0 -0.46em $white, 0 -0.83em 0 -0.477em $white
+
+	5% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, 0 -0.83em 0 -0.42em $white, 0 -0.83em 0 -0.44em $white, 0 -0.83em 0 -0.46em $white, 0 -0.83em 0 -0.477em $white
+
+	95% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, 0 -0.83em 0 -0.42em $white, 0 -0.83em 0 -0.44em $white, 0 -0.83em 0 -0.46em $white, 0 -0.83em 0 -0.477em $white
+
+	10% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, -0.087em -0.825em 0 -0.42em $white, -0.173em -0.812em 0 -0.44em $white, -0.256em -0.789em 0 -0.46em $white, -0.297em -0.775em 0 -0.477em $white
+
+	59% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, -0.087em -0.825em 0 -0.42em $white, -0.173em -0.812em 0 -0.44em $white, -0.256em -0.789em 0 -0.46em $white, -0.297em -0.775em 0 -0.477em $white
+
+	20% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, -0.338em -0.758em 0 -0.42em $white, -0.555em -0.617em 0 -0.44em $white, -0.671em -0.488em 0 -0.46em $white, -0.749em -0.34em 0 -0.477em $white
+
+	38% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, -0.377em -0.74em 0 -0.42em $white, -0.645em -0.522em 0 -0.44em $white, -0.775em -0.297em 0 -0.46em $white, -0.82em -0.09em 0 -0.477em $white
+
+	100% 
+		//If you use compass, instead of the line below you could use +transform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
+		transform: rotate(360deg)
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, 0 -0.83em 0 -0.42em $white, 0 -0.83em 0 -0.44em $white, 0 -0.83em 0 -0.46em $white, 0 -0.83em 0 -0.477em $white
+
+
+@keyframes load6 
+	0% 
+		//If you use compass, instead of the line below you could use +transform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
+		transform: rotate(0deg)
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, 0 -0.83em 0 -0.42em $white, 0 -0.83em 0 -0.44em $white, 0 -0.83em 0 -0.46em $white, 0 -0.83em 0 -0.477em $white
+
+	5% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, 0 -0.83em 0 -0.42em $white, 0 -0.83em 0 -0.44em $white, 0 -0.83em 0 -0.46em $white, 0 -0.83em 0 -0.477em $white
+
+	95% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, 0 -0.83em 0 -0.42em $white, 0 -0.83em 0 -0.44em $white, 0 -0.83em 0 -0.46em $white, 0 -0.83em 0 -0.477em $white
+
+	10% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, -0.087em -0.825em 0 -0.42em $white, -0.173em -0.812em 0 -0.44em $white, -0.256em -0.789em 0 -0.46em $white, -0.297em -0.775em 0 -0.477em $white
+
+	59% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, -0.087em -0.825em 0 -0.42em $white, -0.173em -0.812em 0 -0.44em $white, -0.256em -0.789em 0 -0.46em $white, -0.297em -0.775em 0 -0.477em $white
+
+	20% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, -0.338em -0.758em 0 -0.42em $white, -0.555em -0.617em 0 -0.44em $white, -0.671em -0.488em 0 -0.46em $white, -0.749em -0.34em 0 -0.477em $white
+
+	38% 
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, -0.377em -0.74em 0 -0.42em $white, -0.645em -0.522em 0 -0.44em $white, -0.775em -0.297em 0 -0.46em $white, -0.82em -0.09em 0 -0.477em $white
+
+	100% 
+		//If you use compass, instead of the line below you could use +transform($scale, $rotate, $transx, $transy, $skewx, $skewy, $originx, $originy)
+		transform: rotate(360deg)
+		//If you use compass, instead of the line below you could use +box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+		box-shadow: 0 -0.83em 0 -0.4em $white, 0 -0.83em 0 -0.42em $white, 0 -0.83em 0 -0.44em $white, 0 -0.83em 0 -0.46em $white, 0 -0.83em 0 -0.477em $white
+
