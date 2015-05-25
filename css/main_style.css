@@ -22,6 +22,10 @@ body, html {
   line-height: 15px;
   color: white; }
 
+.selectedSong .rank {
+  background-color: white;
+  color: #b082e1; }
+
 .container {
   width: 100%;
   height: 100%; }
@@ -66,7 +70,12 @@ body, html {
   box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.13);
   border-radius: 4px;
   margin-left: 20px;
-  margin-top: 15px; }
+  margin-top: 15px;
+  cursor: pointer; }
+  .song:hover .rank {
+    background-color: white;
+    color: #b082e1;
+    transition: all 0.3s; }
 
 .rank {
   display: inline-block;
@@ -94,6 +103,10 @@ body, html {
 
 .hidden {
   display: none; }
+
+.lowProfile {
+  opacity: 0.25;
+  transition: all 0.4s; }
 
 .loader {
   font-size: 90px;
