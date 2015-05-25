@@ -4,17 +4,24 @@
 	<meta charset="UTF-8">
 	<title>Tag Representation</title>
 	<link rel="stylesheet" href="css/main_style.css">
-	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+	<!-- <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'> -->
 </head>
 </html>
 <body>
 
+	<div class="loader">Loading...</div>
 	<div class="container">
-		<div class="loader">Loading...</div>
 		<div class="tagContainer">
 		</div>	
 		<div class="songContainer">
-			
+		</div>
+		<div class="chartContainer">
+			<center><canvas id="myChart" class = "pieChart" width="500" height="500"></canvas></center>
+		</div>
+		<div class="tabsContainer">
+			<div id="showChart">
+				
+			</div>
 		</div>
 	</div>
 	<script src = "js/lib/jquery-1.11.2.min.js" type = "text/javascript"></script>

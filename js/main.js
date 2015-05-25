@@ -3,6 +3,7 @@ var tagDOMEls = [];
 var songData = [];
 // var loadedData = {"message":{"header":{"status_code":200,"execute_time":0.046993017196655,"maintenance_id":0},"body":{"track_list":[{"track":{"track_id":83371564,"track_mbid":"45d81a45-b57f-4ad5-8896-273f8578a97e","track_isrc":"","track_spotify_id":"","track_soundcloud_id":206709736,"track_xboxmusic_id":"","track_name":"Bad Blood","track_name_translation_list":[],"track_rating":69,"track_length":244,"commontrack_id":46615074,"instrumental":0,"explicit":0,"has_lyrics":1,"has_subtitles":1,"num_favourite":1017,"lyrics_id":11409636,"subtitle_id":5496822,"album_id":20797064,"album_name":"Bad Blood","artist_id":28705075,"artist_mbid":"","artist_name":"Taylor Swift feat. Kendrick Lamar","album_coverart_100x100":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331.jpg","album_coverart_350x350":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331_350_350.jpg","album_coverart_500x500":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331_500_500.jpg","album_coverart_800x800":"http:\/\/s.mxmcdn.net\/images-storage\/albums\/1\/3\/3\/0\/7\/9\/31970331_800_800.jpg","track_share_url":"https:\/\/www.musixmatch.com\/lyrics\/Taylor-Swift-feat-Kendrick-Lamar\/Bad-Blood","track_edit_url":"https:\/\/www.musixmatch.com\/lyrics\/Taylor-Swift-feat-Kendrick-Lamar\/Bad-Blood?utm_source=application&utm_campaign=api&utm_medium=mxm","commontrack_vanity_id":"Taylor-Swift-feat-Kendrick-Lamar\/Bad-Blood","restricted":0,"updated_time":"2015-05-18T13:54:38Z","primary_genres":{"music_genre_list":[]},"secondary_genres":{"music_genre_list":[]}}}]}}};
 $(document).ready(function() {
+	// Hide everything and just show the loader
 	// Constants
 	var NOT_FOUND = -1;
 
@@ -63,14 +64,89 @@ $(document).ready(function() {
 
 });
 
+
 // Once data has finished loading we can run the following 
 $(document).ajaxStop(function() {
 	// hide the loader
-	$('.loader').addClass('hidden');
+	$('.loader').hide();
+	$('.songContainer').hide();
 
 	// Constants
 	var SELECTED_TAG_NAME = "selected";
 	var TAG_BG_COLOR = "#5ECF81";
+
+
+
+	// For the tabs
+	$('.tabsContainer').on('click', function(event) {
+		if(event.target.id === 'showChart') {
+			$('.songContainer').toggle();
+			$('.chartContainer').toggle();
+		}
+	});
+
+	// Chart variables
+	/// For the Chart 
+	var chartColors = ["#AA78CA", "#FF6940", "#00BD94", "#FF5363", "#FF71A0", "#006FAD", "#51B46D", "#F7921E",
+		"#295D73", "#41C980", "#34ADD3", "#D34E53", "#E7EAEC", "#8A7365", "#FF8051"
+	];
+
+	// Holds Data objects of the chart
+	var chartData = [];
+
+	var chartOptions = {
+	    //Boolean - Whether we should show a stroke on each segment
+	    segmentShowStroke : true,
+
+	    //String - The colour of each segment stroke
+	    segmentStrokeColor : "#384047",
+
+	    //Number - The width of each segment stroke
+	    segmentStrokeWidth : 2,
+
+	    //Number - The percentage of the chart that we cut out of the middle
+	    percentageInnerCutout : 0, // This is 0 for Pie charts
+
+	    //Number - Amount of animation steps
+	    animationSteps : 100,
+
+	    //String - Animation easing effect
+	    animationEasing : "easeInOutQuint",
+
+	    //Boolean - Whether we animate the rotation of the Doughnut
+	    animateRotate : true,
+
+	    //Boolean - Whether we animate scaling the Doughnut from the centre
+	    animateScale : true,
+
+	    //String - A legend template
+	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",
+
+	    tooltipTemplate: "<%if (label){%><%=label%><%}%>",
+
+	    showTooltips : false,
+
+	    tooltipFontFamily: "'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+	     // Number - Pixel radius of the tooltip border
+	    tooltipCornerRadius: 4,
+
+		// Array - Array of string names to attach tooltip events
+	    tooltipEvents: [""],
+
+        onAnimationComplete: function(){
+	        this.showTooltip(this.segments, true);
+	    }
+
+	};
+
+
+
+	var chartView = document.getElementById("myChart");
+	var ctx = chartView.getContext("2d");
+	var pieChart = new Chart(ctx).Pie(chartData,chartOptions);
+
+
 
 	// Show the top songs 
 
@@ -94,12 +170,22 @@ $(document).ajaxStop(function() {
 
 		// let us do something about clicking this shit 
 		songDOM.addEventListener('click', function(event) {
-			$('.tagContainer').children().toArray().forEach(function(child){
-				if(songData[index].tags.indexOf(child.innerText) > -1)
-					$(child).removeClass('lowProfile');
-				else
-					$(child).addClass('lowProfile');
-			});
+			if(this.className.indexOf("selectedSong") > -1) {
+				$(this).removeClass('selectedSong');
+				$('.tagContainer').children().toArray().forEach(function(child){
+						$(child).removeClass('lowProfile');
+				});
+			}else{
+				$(this).addClass('selectedSong')
+				$(this).siblings().removeClass('selectedSong');
+				$('.tagContainer').children().toArray().forEach(function(child){
+					if(songData[index].tags.indexOf(child.innerText) > -1)
+						$(child).removeClass('lowProfile');
+					else
+						$(child).addClass('lowProfile');
+				});
+				
+			}
 		});
 
 	});
@@ -114,6 +200,10 @@ $(document).ajaxStop(function() {
 	var colorsPresentInChart = [];
 	// Converting tag data to DOM elements
 	var tagContainer = document.querySelector('.tagContainer');
+	// To cycle between pie chart segment colors
+	var colorIndex = 0;
+	// Holds hex value of colors that are present in the pie chart at any moment
+	var colorsPresentInChart = [];
 	tagData.forEach(function(currentTagData, index) {
 		// Create and add a new tag DOM element to the tag container
 		var newTagDOMEl = document.createElement('div');
@@ -122,11 +212,24 @@ $(document).ajaxStop(function() {
 		newTagDOMEl.className = 'tag';
 		newTagDOMEl.textContent =  currentTagData['tagName'];
 		tagContainer.appendChild(newTagDOMEl);
-		tagDOMEls.push(newTagDOMEl);
 
 		newTagDOMEl.addEventListener('click', function(event) {
 			if(isSelected(this.className)){ 
 				deselect(this);
+
+				// Get the Index at which the deselected tag data was present in chartData array
+				var chartDataIndex;
+				chartData.forEach(function(data, currentIndex){
+					if(data.label === currentTagData['tagName'] && data.value === currentTagData['tagRating'])
+						chartDataIndex = currentIndex;
+				});
+
+				// On Deselect remove data for Pie Chart and Chart Data
+				chartData.splice(chartDataIndex, 1);
+				pieChart.removeData(chartDataIndex);
+
+				// Remove the chart color from colorsPresentInChart Array
+				colorsPresentInChart.splice(colorsPresentInChart.indexOf(this.style.backgroundColor), 1);
 				// Reset the background color of the deselected tag to original
 				this.style.backgroundColor = tagColor;
 				return;
@@ -140,8 +243,10 @@ $(document).ajaxStop(function() {
 					segmentColor = chartColors[(colorIndex++) % chartColors.length];
 					if(colorsPresentInChart.indexOf(segmentColor) === -1) break;
 				}
+				colorsPresentInChart.push(segmentColor);
 
 				select(this, segmentColor);
+				insertInChart(selectedTagName, selectedTagRating, segmentColor);
 			}
 
 		});
@@ -150,14 +255,7 @@ $(document).ajaxStop(function() {
 
 
 
-	/// For the Chart 
-	var chartColors = ["#AA78CA", "#FF6940", "#00BD94", "#FF5363", "#FF71A0", "#006FAD", "#51B46D", "#F7921E",
-		"#295D73", "#41C980", "#34ADD3", "#D34E53", "#E7EAEC", "#8A7365", "#FF8051"
-	];
-
-
-
-
+	
 	//////// Utility Functions 
 
 
@@ -251,6 +349,24 @@ $(document).ajaxStop(function() {
 	function select(tagDOMEl, backgroundColor) {
 		tagDOMEl.className = tagDOMEl.className + " " + SELECTED_TAG_NAME;
 		tagDOMEl.style.backgroundColor = backgroundColor;
+	}
+
+
+	/*
+	* Function : insertInChart(name of tag, rating of tag, color of pieChart segment for tag)
+	* ---------------------------------------------------------------------------------------
+	* Inserts data into chartData also inserts new data into live pie chart that is visible 
+	* in the view port
+	*/	
+	function insertInChart(tagName, tagRating, segmentColor) {
+		var newData = {
+			value : tagRating,
+			color : segmentColor,
+			highlight : "",
+			label : tagName
+		};
+		pieChart.addData(newData);
+		chartData.push(newData);
 	}
 
 
