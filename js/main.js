@@ -2,6 +2,7 @@ var tagData = [];
 var tagDOMEls = [];
 var songData = [];
 $(document).ready(function() {
+	$('#showChart').hide();
 	// Hide everything and just show the loader
 	// Constants
 	var NOT_FOUND = -1;
@@ -69,6 +70,7 @@ $(document).ajaxStop(function() {
 	// hide the loader
 	$('.loader').hide();
 	$('.songContainer').hide();
+	$('#showChart').show();
 
 	// Constants
 	var SELECTED_TAG_NAME = "selected";
