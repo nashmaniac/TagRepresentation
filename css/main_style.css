@@ -77,15 +77,32 @@ body, html {
   overflow-y: auto; }
 
 .chartContainer {
-  padding: 20px;
   position: fixed;
   width: 50%;
-  max-height: 100%;
+  height: 500px;
   float: right;
   margin-left: 47%;
   height: 500px;
   top: 50%;
-  margin-top: -250px; }
+  margin-top: -250px;
+  color: white;
+  font-family: "Source Sans Pro"; }
+
+.selectTagMessage {
+  padding: 20px;
+  display: block;
+  z-index: -10;
+  width: 500px;
+  height: 500px;
+  border-radius: 500px;
+  color: white;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  margin-left: -250px;
+  font-size: 2em;
+  background-image: url(".././images/selectMessage.png");
+  background-color: rgba(0, 0, 0, 0.13); }
 
 .song {
   display: inline-block;

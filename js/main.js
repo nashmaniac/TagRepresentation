@@ -9,10 +9,11 @@ var TAG_BG_COLOR = "#5ECF81";
 
 $(document).ready(function() {
 	$('#showChart').hide();
+	$('.selectTagMessage').hide();
 	// Constants
 
 
-	var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=2&country=us&f_has_lyrics=1&apikey=1ded3ade3e63977aef9212b43320afb1&format=jsonp&callback=?";
+	var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=2&country=in&f_has_lyrics=1&apikey=1ded3ade3e63977aef9212b43320afb1&format=jsonp&callback=?";
 	var tagUrl = "http://ec2-23-20-32-78.compute-1.amazonaws.com/lyrics_tagger/v1/tags?trackID=";
 
 	var tagUrls = [];
@@ -76,6 +77,7 @@ $(document).ajaxStop(function() {
 	$('.loader').hide();
 	$('.songContainer').hide();
 	$('#showChart').show();
+	$('.selectTagMessage').show();
 
 	// Stuff to manage color in the chart
 	var colorManager = new ColorManager();
@@ -139,12 +141,10 @@ $(document).ajaxStop(function() {
 
 	};
 
-	var chartView = document.getElementById("myChart");
-	var ctx = chartView.getContext("2d");
+	var ctx = document.getElementById("myChart").getContext("2d");
 	var pieChart = new Chart(ctx).Pie(chartData,chartOptions);
 
 	// Show the top songs 
-
 	var songContainer = document.querySelector('.songContainer');
 	songData.forEach(function(song, index) {
 		var songDOM = getNewDOMClass('div', 'song');
