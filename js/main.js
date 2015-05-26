@@ -62,22 +62,19 @@ $(document).ajaxStop(function() {
 	var SELECTED_TAG_NAME = "selected";
 	var TAG_BG_COLOR = "#5ECF81";
 
+	var colorManager = new ColorManager();
 
 	// Rearranges the tag data array to descending order by the tag rating 
 	tagData.sort(descBy('tagRating'));
 
 	// Converting tag data to DOM elements
 	var tagContainer = document.querySelector('.tagContainer');
-	// To cycle between pie chart segment colors
-	var colorIndex = 0;
-	// Holds hex value of colors that are present in the pie chart at any moment
-	var colorsPresentInChart = [];
+
 	tagData.forEach(function(currentTagData, index) {
 		// Create and add a new tag DOM element to the tag container
-		var newTagDOMEl = document.createElement('div');
+		var newTagDOMEl = getNewDOMClass('div','tag');
 		var tagColor = shadeColor(TAG_BG_COLOR, index * 1.4);
 		newTagDOMEl.style.backgroundColor = tagColor;
-		newTagDOMEl.className = 'tag';
 		newTagDOMEl.textContent =  currentTagData['tagName'];
 		tagContainer.appendChild(newTagDOMEl);
 
@@ -96,8 +93,7 @@ $(document).ajaxStop(function() {
 				chartData.splice(chartDataIndex, 1);
 				pieChart.removeData(chartDataIndex);
 
-				// Remove the chart color from colorsPresentInChart Array
-				colorsPresentInChart.splice(colorsPresentInChart.indexOf(this.style.backgroundColor), 1);
+				colorManager.removeColor(this.style.backgroundColor);
 				// Reset the background color of the deselected tag to original
 				this.style.backgroundColor = tagColor;
 				return;
@@ -106,13 +102,7 @@ $(document).ajaxStop(function() {
 				var selectedTagName = tagData[index]['tagName'];
 				var selectedTagRating = tagData[index]['tagRating'];
 
-				var segmentColor = chartColors[(colorIndex++) % chartColors.length];
-				while(true){
-					segmentColor = chartColors[(colorIndex++) % chartColors.length];
-					if(colorsPresentInChart.indexOf(segmentColor) === -1) break;
-				}
-				colorsPresentInChart.push(segmentColor);
-
+				var segmentColor = colorManager.getColor();
 				select(this, segmentColor);
 				insertInChart(selectedTagName, selectedTagRating, segmentColor);
 			}
@@ -123,10 +113,6 @@ $(document).ajaxStop(function() {
 
 
 
-	/// For the Chart 
-	var chartColors = ["#AA78CA", "#FF6940", "#00BD94", "#FF5363", "#FF71A0", "#006FAD", "#51B46D", "#F7921E",
-		"#295D73", "#41C980", "#34ADD3", "#D34E53", "#E7EAEC", "#8A7365", "#FF8051"
-	];
 
 	// Holds Data objects of the chart
 	var chartData = [];
@@ -298,6 +284,54 @@ $(document).ajaxStop(function() {
 	function select(tagDOMEl, backgroundColor) {
 		tagDOMEl.className = tagDOMEl.className + " " + SELECTED_TAG_NAME;
 		tagDOMEl.style.backgroundColor = backgroundColor;
+	}
+
+	/*
+	* Function : getNewDOMClass(name of tag e.g. div/span/p, name of css class)
+	* --------------------------------------------------------------------------
+	* Creates and returns new dom element with the specified parameters
+	*/
+	function getNewDOMClass(tagName, className) {
+		var newDOMClass = document.createElement(tagName);
+		newDOMClass.className = className;
+		return newDOMClass;
+	}
+
+	/*
+	* ColorManager 
+	* ------------------------------------------------------
+	* Used to generate different colors for the pie chart
+	* makes sure that the pie chart at any given instant doesn't
+	* have same colors
+	* Exports Two functions - getColor() and removeColor(...)
+	*/
+
+	function ColorManager() {
+		var chartColors = ["#AA78CA", "#FF6940", "#00BD94", "#FF5363", "#FF71A0", "#006FAD", "#51B46D", "#F7921E",
+			"#295D73", "#41C980", "#34ADD3", "#D34E53", "#E7EAEC", "#8A7365", "#FF8051"
+		];
+
+		// To cycle between pie chart segment colors
+		var colorIndex = 0;
+		// Holds hex value of colors that are present in the pie chart at any moment
+		var colorsPresentInChart = [];
+
+		return {
+			getColor : function() {
+				var newColor;
+				while(true){
+					newColor = chartColors[(colorIndex++) % chartColors.length];
+					if(colorsPresentInChart.indexOf(newColor) === -1) break;
+				}
+				colorsPresentInChart.push(newColor);
+				return newColor;
+			},
+
+			removeColor : function(colorToRemove) {
+				colorsPresentInChart.splice(colorsPresentInChart.indexOf(colorToRemove), 1);
+			}
+		};
+
 	}
 
 
