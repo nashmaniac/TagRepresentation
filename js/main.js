@@ -79,6 +79,7 @@ $(document).ajaxStop(function() {
 	$('#showChart').show();
 	$('.selectTagMessage').show();
 
+
 	// Stuff to manage color in the chart
 	var colorManager = new ColorManager();
 
@@ -216,7 +217,7 @@ $(document).ajaxStop(function() {
 				colorManager.removeColor(this.style.backgroundColor);
 				// Reset the background color of the deselected tag to original
 				this.style.backgroundColor = tagColor;
-				return;
+
 			} else {
 
 				var selectedTagName = tagData[index]['tagName'];
@@ -227,6 +228,8 @@ $(document).ajaxStop(function() {
 				select(this, segmentColor);
 				insertInChart(selectedTagName, selectedTagRating, segmentColor);
 			}
+			if(chartData.length <= 0) $('.selectTagMessage').show();
+			else $('.selectTagMessage').hide();
 
 		});
 	});
