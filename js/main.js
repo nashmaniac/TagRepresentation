@@ -127,15 +127,19 @@ $(document).ajaxStop(function() {
 	// Manages colors for the pie chart
 	var colorManager = new ColorManager();
 
+	// Cache the DOM elements
+	var chartContainer = $('.chartContainer');
+	var songContainer = $('.songContainer');
+
 
 	// For the tabs
 	$('.tabsContainer').on('click', function(event) {
 		if(event.target.id === 'showChart') {
-			$('.chartContainer').siblings().hide();
-			$('.chartContainer').toggleClass('hiddenChart');
+			chartContainer.siblings().hide();
+			chartContainer.removeClass('hiddenChart');
 		}else if(event.target.id === "showSongs") {
-			$('.chartContainer').toggleClass('hiddenChart');
-			$('.songContainer').show();
+			chartContainer.addClass('hiddenChart');
+			$(songContainer).show();
 		}else if(event.target.id === 'chooseCountry'){
 			Custombox.open({
                 target: '#mapContainer',
