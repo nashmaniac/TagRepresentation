@@ -129,7 +129,7 @@ $(document).ajaxStop(function() {
                 target: '#mapContainer',
                 effect: 'fadein'
             });
-            e.preventDefault();
+            event.preventDefault();
 		}
 	});
 
