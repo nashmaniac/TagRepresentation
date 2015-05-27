@@ -8,12 +8,45 @@ var TAG_BG_COLOR = "#5ECF81";
 
 
 $(document).ready(function() {
-	$('#showChart').hide();
+	$('.tabsContainer').hide();
 	$('.selectTagMessage').hide();
-	// Constants
+	$('#mapContainer').hide();
 
+	// Show the map to choose the country if not already chosen
+	if(!sessionStorage.getItem('countryCode')) {
+		$('#mapContainer').show();
+	}else{
+		$('#mapContainer').hide();
+	}
+	
 
-	var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=2&country=in&f_has_lyrics=1&apikey=1ded3ade3e63977aef9212b43320afb1&format=jsonp&callback=?";
+	// Listener for clicks on the map
+	$('#vmap').vectorMap({
+		    map: 'world_en',
+		    backgroundColor: '#384047',
+		    color: '#ffffff',
+		    hoverOpacity: 0.7,
+		    selectedColor: '#ff0000',
+		    enableZoom: true,
+		    showTooltip: true,
+		    values: sample_data,
+		    scaleColors: ['#C8EEFF', '#006491'],
+		    normalizeFunction: 'polynomial',
+		    selectedRegion : "us",
+		    onRegionClick : function(element, code, region) {
+		    	sessionStorage.setItem('countryCode', code);
+		    	console.log("We will show the country for " + code);
+		    	document.location.reload(true);
+		    }
+	});
+
+	// URL Variables
+	var apiUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get";
+	var countryCode =  sessionStorage.getItem('countryCode');
+	var numTopTracks = 1;
+	var apiKey = "1ded3ade3e63977aef9212b43320afb";
+	// var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=2&country=in&f_has_lyrics=1&apikey=1ded3ade3e63977aef9212b43320afb1&format=jsonp&callback=?";
+	var largeDataUrl = apiUrl + "?page=1&page_size=" + numTopTracks + "&country=" + countryCode + "&f_has_lyrics=1&apikey=1ded3ade3e63977aef9212b43320afb1&format=jsonp&callback=?" ;
 	var tagUrl = "http://ec2-23-20-32-78.compute-1.amazonaws.com/lyrics_tagger/v1/tags?trackID=";
 
 	var tagUrls = [];
@@ -76,11 +109,11 @@ $(document).ajaxStop(function() {
 	// hide the loader
 	$('.loader').hide();
 	$('.songContainer').hide();
-	$('#showChart').show();
+	$('.tabsContainer').show();
 	$('.selectTagMessage').show();
 
 
-	// Stuff to manage color in the chart
+	// Manages colors for the pie chart
 	var colorManager = new ColorManager();
 
 
@@ -89,6 +122,8 @@ $(document).ajaxStop(function() {
 		if(event.target.id === 'showChart') {
 			$('.songContainer').toggle();
 			$('.chartContainer').toggle();
+		}else if(event.target.id === 'chooseCountry'){
+			$('#mapContainer').toggle();
 		}
 	});
 

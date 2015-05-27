@@ -38,21 +38,40 @@ body, html {
 
 .tabsContainer {
   position: fixed;
-  padding: 15px;
+  padding: 8px;
   height: 100vh;
-  width: 80px;
+  width: 60px;
+  background-color: #22262a;
   left: 100%;
-  margin-left: -80px;
+  margin-left: -60px;
   margin-top: -5px; }
 
-#showChart {
+#showChart, #chooseCountry {
+  display: block;
   padding: 5px;
   user-select: none;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border-radius: 50px;
   background-color: #CAABEB;
+  margin: 0 auto;
   cursor: pointer; }
+
+#chooseCountry {
+  margin: 0 auto;
+  margin-top: 20px;
+  background-color: red; }
+
+#mapContainer {
+  position: absolute;
+  width: 1000px;
+  height: 550px;
+  top: 50%;
+  margin-top: -275px;
+  left: 50%;
+  margin-left: -500px;
+  background-color: #fff;
+  box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.4); }
 
 .tagContainer {
   width: 50%;
@@ -64,7 +83,8 @@ body, html {
   align-items: flex-start;
   align-content: flex-start;
   float: left;
-  overflow: auto; }
+  overflow: auto;
+  z-index: -1; }
 
 .songContainer {
   padding: 20px;
@@ -108,7 +128,7 @@ body, html {
   display: inline-block;
   vertical-align: middle;
   padding: 4px;
-  width: 70%;
+  width: 80%;
   height: 80px;
   text-align: left;
   font-size: 1.1em;
@@ -154,8 +174,8 @@ body, html {
   display: block !important; }
 
 .lowProfile {
-  opacity: 0.4;
-  transition: all 0.4s; }
+  opacity: 0.3;
+  transition: all 0.3s; }
 
 .loader {
   font-size: 90px;
