@@ -14,7 +14,10 @@ $(document).ready(function() {
 
 	// Show the map to choose the country if not already chosen
 	if(!sessionStorage.getItem('countryCode')) {
-		$('#mapContainer').show();
+		Custombox.open({
+            target: '#mapContainer',
+            effect: 'fadein'
+        });
 	}else{
 		$('#mapContainer').hide();
 	}
@@ -123,7 +126,11 @@ $(document).ajaxStop(function() {
 			$('.songContainer').toggle();
 			$('.chartContainer').toggle();
 		}else if(event.target.id === 'chooseCountry'){
-			$('#mapContainer').toggle();
+			Custombox.open({
+                target: '#mapContainer',
+                effect: 'fadein'
+            });
+            e.preventDefault();
 		}
 	});
 
@@ -222,12 +229,13 @@ $(document).ajaxStop(function() {
 
 	// Rearranges the tag data array to descending order by the tag rating 
 	tagData.sort(descBy('tagRating'));
+	tagData.splice(40, tagData.length - 40);
 	// Converting tag data to DOM elements
 	var tagContainer = document.querySelector('.tagContainer');
 	tagData.forEach(function(currentTagData, index) {
 		// Create and add a new tag DOM element to the tag container
 		var newTagDOMEl = getNewDOMClass('div', 'tag');
-		var tagColor = shadeColor(TAG_BG_COLOR, index * 1.4);
+		var tagColor = shadeColor(TAG_BG_COLOR, index * 2);
 		newTagDOMEl.style.backgroundColor = tagColor;
 		newTagDOMEl.textContent =  currentTagData['tagName'];
 		tagContainer.appendChild(newTagDOMEl);
