@@ -10,6 +10,7 @@ var TAG_BG_COLOR = "#5ECF81";
 $(document).ready(function() {
 	$('.tabsContainer').hide();
 	$('.selectTagMessage').hide();
+	$('.chartContainer').addClass('hiddenChart');
 	$('#mapContainer').hide();
 
 	// Show the map to choose the country if not already chosen
@@ -38,7 +39,6 @@ $(document).ready(function() {
 		    selectedRegion : "us",
 		    onRegionClick : function(element, code, region) {
 		    	sessionStorage.setItem('countryCode', code);
-		    	console.log("We will show the country for " + code);
 		    	document.location.reload(true);
 		    }
 	});
@@ -46,7 +46,7 @@ $(document).ready(function() {
 	// URL Variables
 	var apiUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get";
 	var countryCode =  sessionStorage.getItem('countryCode');
-	var numTopTracks = 1;
+	var numTopTracks = 5;
 	var apiKey = "1ded3ade3e63977aef9212b43320afb";
 	// var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=2&country=in&f_has_lyrics=1&apikey=1ded3ade3e63977aef9212b43320afb1&format=jsonp&callback=?";
 	var largeDataUrl = apiUrl + "?page=1&page_size=" + numTopTracks + "&country=" + countryCode + "&f_has_lyrics=1&apikey=1ded3ade3e63977aef9212b43320afb1&format=jsonp&callback=?" ;
@@ -111,7 +111,6 @@ $(document).ready(function() {
 $(document).ajaxStop(function() {
 	// hide the loader
 	$('.loader').hide();
-	$('.songContainer').hide();
 	$('.tabsContainer').show();
 	$('.selectTagMessage').show();
 
@@ -124,7 +123,7 @@ $(document).ajaxStop(function() {
 	$('.tabsContainer').on('click', function(event) {
 		if(event.target.id === 'showChart') {
 			$('.songContainer').toggle();
-			$('.chartContainer').toggle();
+			$('.chartContainer').toggleClass('hiddenChart');
 		}else if(event.target.id === 'chooseCountry'){
 			Custombox.open({
                 target: '#mapContainer',
