@@ -17,29 +17,36 @@ $(document).ready(function() {
 	if(!sessionStorage.getItem('countryCode')) {
 		Custombox.open({
             target: '#mapContainer',
-            effect: 'fadein'
+            effect: 'fadein',
+            overlayColor : '#384047',
+            overlayOpacity : 1,
+            overlayClose : false,
+            zindex : -10
         });
 	}else{
 		$('#mapContainer').hide();
 	}
 	
 
-	// Listener for clicks on the map
+	// Initialize the world map
 	$('#vmap').vectorMap({
 		    map: 'world_en',
 		    backgroundColor: '#384047',
-		    color: '#ffffff',
+		    color: '#384047',
 		    hoverOpacity: 0.7,
 		    selectedColor: '#ff0000',
-		    enableZoom: true,
 		    showTooltip: true,
 		    values: sample_data,
+		    enableZoom : false,
 		    scaleColors: ['#C8EEFF', '#006491'],
 		    normalizeFunction: 'polynomial',
 		    selectedRegion : "us",
 		    onRegionClick : function(element, code, region) {
 		    	sessionStorage.setItem('countryCode', code);
 		    	document.location.reload(true);
+		    },
+		    onRegionOver : function(element, code, region) {
+		    	$('#mapMessage').html("SHOW TOP CHARTS FOR <span class = 'countryName'>" + region.toUpperCase()) + "</span>";
 		    }
 	});
 
@@ -102,7 +109,6 @@ $(document).ready(function() {
 		}
 
 	}
-		
 
 });
 
@@ -114,6 +120,9 @@ $(document).ajaxStop(function() {
 	$('.tabsContainer').show();
 	$('.selectTagMessage').show();
 
+	// Set the text of country selector to the country code
+	$('#chooseCountry').html(sessionStorage.getItem('countryCode').toUpperCase());
+
 
 	// Manages colors for the pie chart
 	var colorManager = new ColorManager();
@@ -122,8 +131,11 @@ $(document).ajaxStop(function() {
 	// For the tabs
 	$('.tabsContainer').on('click', function(event) {
 		if(event.target.id === 'showChart') {
-			$('.songContainer').toggle();
+			$('.chartContainer').siblings().hide();
 			$('.chartContainer').toggleClass('hiddenChart');
+		}else if(event.target.id === "showSongs") {
+			$('.chartContainer').toggleClass('hiddenChart');
+			$('.songContainer').show();
 		}else if(event.target.id === 'chooseCountry'){
 			Custombox.open({
                 target: '#mapContainer',
@@ -431,6 +443,7 @@ $(document).ajaxStop(function() {
 		};
 
 	};
+
 
 });
 

@@ -44,12 +44,13 @@ body, html
 .tabsContainer
 	position : fixed
 	padding : 8px
-	height : 100vh
+	padding-top : 20px
+	height : 100%
 	width : 60px
 	background-color : darken($color_bg, 10%)
+	top : 0
 	left : 100%
 	margin-left : -60px
-	margin-top : -5px
 
 #showChart
 	display : block
@@ -61,30 +62,52 @@ body, html
 	background-color : $color_rank
 	margin : 0 auto
 	cursor : pointer
+	margin-top : 20px
 
 #chooseCountry
 	@extend #showChart
 	margin : 0 auto
+	background-color : #FF6E6E
+	color : white
+	text-align : center
+	font-weight : bolder
+	line-height : 28px
 	margin-top : 20px
-	background-color : red
+
+#showSongs
+	@extend #showChart
+	margin-top : 0px
+	background-color : #00DB72
 
 #mapContainer
 	position : absolute
 	width : 1000px
 	height : 550px
 	top : 50%
-	// margin-top : -275px
+	margin-top : -105px
 	left : 50%
 	margin-left : -500px
-	background-color : #fff
-	box-shadow : 0px 5px 8px rgba(0, 0, 0, 0.5)
+	background-color : $color_bg
+	// box-shadow : 0px 5px 8px rgba(0, 0, 0, 0.5)
+	#mapMessage 
+		text-align : center
+		color : white
+		font-family : Roboto
+		padding : 20px
+		margin-bottom : 30px
+		font-size : 1.2em
 
+.countryName 
+	padding : 5px
+	color : black
+	background-color : white
+	font-weight : bolder
 
 
 .tagContainer
 	width : 50%
 	max-height : 100%
-	padding : 20px
+	// padding : 20px
 	display : flex
 	flex-direction : row
 	flex-wrap : wrap
@@ -95,7 +118,7 @@ body, html
 	z-index : -1
 
 .songContainer
-	padding : 20px
+	// padding : 20px
 	margin-left : 50%
 	position : fixed
 	width : 50%
@@ -147,7 +170,8 @@ body, html
 	box-shadow : 0px 2px 1px rgba(0,0 ,0, 0.13)
 	border-radius : 4px
 	margin-left : 20px
-	margin-top: 15px
+	margin-top: 10px
+	margin-bottom : 5px
 	cursor : pointer
 	&:hover
 		border : 1px solid $color_rank !important

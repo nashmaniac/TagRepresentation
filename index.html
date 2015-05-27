@@ -5,6 +5,7 @@
 	<title>Tag Representation</title>
 	<link rel="stylesheet" href="css/main_style.css">
 	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
 	<link href="js/lib/jqvmap/jqvmap.css" media="screen" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="css/custombox.css">
 </head>
@@ -12,26 +13,30 @@
 <body>
 
 	<div class="loader">Loading...</div>
+	<div class="tagContainer">
+	</div>	
 	<div class="container">
-		<div class="tagContainer">
-		</div>	
 		<div class="songContainer">
 		</div>
 		<div class="chartContainer">
 			<div class = 'selectTagMessage'></div>
 			<center><canvas id="myChart" class = "pieChart" width="500" height="500"></canvas></center>
 		</div>
-		<div class="tabsContainer">
-			<div id="showChart">
-				
-			</div>
-			<div id="chooseCountry">
-				
-			</div>
+	</div>
+	<div class="tabsContainer">
+		<div id="showSongs">
+			
+		</div>
+		<div id="showChart">
+			
+		</div>
+		<div id="chooseCountry">
+			US
 		</div>
 	</div>
-	<div id="mapContainer">
-		<div id="vmap" style = "width : 1000px ; height : 550px;"></div>
+	<div id="mapContainer" style = "z-index : 999;">
+		<div id = "mapMessage">CHOOSE A COUNTRY TO SHOW TOP CHARTS FOR</div>
+		<div id="vmap" style = "width : 1000px ; height : 550px; z-index : 1000"></div>
 	</div>
 	<script src = "js/lib/jquery-1.11.2.min.js" type = "text/javascript"></script>
 	<script src="js/lib/Chart.js" type="text/javascript" ></script>
