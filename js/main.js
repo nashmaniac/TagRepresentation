@@ -4,7 +4,7 @@ $(document).ready(function() {
 	// Constants
 	var NOT_FOUND = -1;
 
-	var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=10&country=us&f_has_lyrics=1&apikey=";
+	var largeDataUrl = "http://api.musixmatch.com/ws/1.1/chart.tracks.get?page=1&page_size=2&country=us&f_has_lyrics=1&apikey=";
 	var tagUrl = "http://ec2-23-20-32-78.compute-1.amazonaws.com/lyrics_tagger/v1/tags?trackID=";
 
 	var tagUrls = [];
@@ -29,7 +29,7 @@ $(document).ready(function() {
 	});
 
 	// Pushes new data into the tagData Array, avoids duplicate data
-	function addNewTagData(newTagRating, newTagName) {
+	var addNewTagData = function(newTagRating, newTagName) {
 		// firt we have to find if something related to the current tag is already present in the dataset
 		var checkIndex = NOT_FOUND;
 		tagData.forEach(function(currentTagData, index) {
@@ -62,8 +62,6 @@ $(document).ajaxStop(function() {
 	var SELECTED_TAG_NAME = "selected";
 	var TAG_BG_COLOR = "#5ECF81";
 
-	var colorManager = new ColorManager();
-
 	// Rearranges the tag data array to descending order by the tag rating 
 	tagData.sort(descBy('tagRating'));
 
@@ -82,18 +80,10 @@ $(document).ajaxStop(function() {
 			if(isSelected(this.className)){ 
 				deselect(this);
 
-				// Get the Index at which the deselected tag data was present in chartData array
-				var chartDataIndex;
-				chartData.forEach(function(data, currentIndex){
-					if(data.label === currentTagData['tagName'] && data.value === currentTagData['tagRating'])
-						chartDataIndex = currentIndex;
-				});
-
 				// On Deselect remove data for Pie Chart and Chart Data
-				chartData.splice(chartDataIndex, 1);
-				pieChart.removeData(chartDataIndex);
-
-				colorManager.removeColor(this.style.backgroundColor);
+				ChartManager.chartManager.removeData(currentTagData['tagName']);
+				// Remove the color form the pie chart color collection
+				ColorManager.colorManager.removeColor(this.style.backgroundColor);
 				// Reset the background color of the deselected tag to original
 				this.style.backgroundColor = tagColor;
 				return;
@@ -102,9 +92,9 @@ $(document).ajaxStop(function() {
 				var selectedTagName = tagData[index]['tagName'];
 				var selectedTagRating = tagData[index]['tagRating'];
 
-				var segmentColor = colorManager.getColor();
+				var segmentColor = ColorManager.colorManager.getColor();
 				select(this, segmentColor);
-				insertInChart(selectedTagName, selectedTagRating, segmentColor);
+				ChartManager.chartManager.insertInChart(selectedTagName, selectedTagRating, segmentColor);
 			}
 
 		});
@@ -113,70 +103,7 @@ $(document).ajaxStop(function() {
 
 
 
-
-	// Holds Data objects of the chart
-	var chartData = [];
-
-	var chartOptions = {
-	    //Boolean - Whether we should show a stroke on each segment
-	    segmentShowStroke : true,
-
-	    //String - The colour of each segment stroke
-	    segmentStrokeColor : "#384047",
-
-	    //Number - The width of each segment stroke
-	    segmentStrokeWidth : 2,
-
-	    //Number - The percentage of the chart that we cut out of the middle
-	    percentageInnerCutout : 0, // This is 0 for Pie charts
-
-	    //Number - Amount of animation steps
-	    animationSteps : 100,
-
-	    //String - Animation easing effect
-	    animationEasing : "easeInOutQuint",
-
-	    //Boolean - Whether we animate the rotation of the Doughnut
-	    animateRotate : true,
-
-	    //Boolean - Whether we animate scaling the Doughnut from the centre
-	    animateScale : true,
-
-	    //String - A legend template
-	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",
-
-	    tooltipTemplate: "<%if (label){%><%=label%><%}%>",
-
-	    showTooltips : false,
-
-	    tooltipFontFamily: "'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-
-	     // Number - Pixel radius of the tooltip border
-	    tooltipCornerRadius: 4,
-
-		// Array - Array of string names to attach tooltip events
-	    tooltipEvents: [""],
-
-        onAnimationComplete: function(){
-	        this.showTooltip(this.segments, true);
-	    }
-
-
-
-
-	};
-
-	var chartView = document.getElementById("myChart");
-	var ctx = chartView.getContext("2d");
-	var pieChart = new Chart(ctx).Pie(chartData,chartOptions);
-
-
-
-
-
 	//////// Utility Functions 
-
-
 	/*
 	* Function : shadeColor(String value of hex color code, positive value to lighten negative to darken)
 	* ---------------------------------------------------------------------------------------------------
@@ -201,14 +128,6 @@ $(document).ajaxStop(function() {
 	    var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
 
 	    return "#"+RR+GG+BB;
-	}
-
-	// Creates and returns a new tagData object of format {tagName : , tagRating : }
-	function newTagData(newTagName, newTagRating) {
-		return {
-			tagName : newTagName,
-			tagRating : newTagRating
-		};
 	}
 
 	/*
@@ -241,22 +160,7 @@ $(document).ajaxStop(function() {
 	}
 
 	
-	/*
-	* Function : insertInChart(name of tag, rating of tag, color of pieChart segment for tag)
-	* ---------------------------------------------------------------------------------------
-	* Inserts data into chartData also inserts new data into live pie chart that is visible 
-	* in the view port
-	*/	
-	function insertInChart(tagName, tagRating, segmentColor) {
-		var newData = {
-			value : tagRating,
-			color : segmentColor,
-			highlight : "",
-			label : tagName
-		};
-		pieChart.addData(newData);
-		chartData.push(newData);
-	}
+	
 
 	/*
 	* Function : isSelected(class name of the clicked DOM element)
@@ -297,42 +201,6 @@ $(document).ajaxStop(function() {
 		return newDOMClass;
 	}
 
-	/*
-	* ColorManager 
-	* ------------------------------------------------------
-	* Used to generate different colors for the pie chart
-	* makes sure that the pie chart at any given instant doesn't
-	* have same colors
-	* Exports Two functions - getColor() and removeColor(...)
-	*/
-
-	function ColorManager() {
-		var chartColors = ["#AA78CA", "#FF6940", "#00BD94", "#FF5363", "#FF71A0", "#006FAD", "#51B46D", "#F7921E",
-			"#295D73", "#41C980", "#34ADD3", "#D34E53", "#E7EAEC", "#8A7365", "#FF8051"
-		];
-
-		// To cycle between pie chart segment colors
-		var colorIndex = 0;
-		// Holds hex value of colors that are present in the pie chart at any moment
-		var colorsPresentInChart = [];
-
-		return {
-			getColor : function() {
-				var newColor;
-				while(true){
-					newColor = chartColors[(colorIndex++) % chartColors.length];
-					if(colorsPresentInChart.indexOf(newColor) === -1) break;
-				}
-				colorsPresentInChart.push(newColor);
-				return newColor;
-			},
-
-			removeColor : function(colorToRemove) {
-				colorsPresentInChart.splice(colorsPresentInChart.indexOf(colorToRemove), 1);
-			}
-		};
-
-	}
 
 
 });
