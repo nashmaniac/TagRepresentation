@@ -2,10 +2,10 @@
 	// Create a new namespace 
 	window.ChartManager = {};
 
-	// Export a single instance of 
+	// Export a single instance 
 	window.ChartManager.chartManager = new ChartManager();
 
-	
+
 	// Holds Data objects of the chart
 	var chartData = [];
 
@@ -59,6 +59,7 @@
 	var ctx = chartView.getContext("2d");
 	var pieChart = new Chart(ctx).Pie(chartData,chartOptions);
 
+	// Main Object to export
 	function ChartManager() {
 
 	}
