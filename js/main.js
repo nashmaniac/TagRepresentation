@@ -7,6 +7,7 @@
 	// Constants
 	var NOT_FOUND = -1;
 	var TAG_BG_COLOR = "#5ECF81";
+	var SELECTED_TAG_NAME = "selected";
 
 
 	var tagUrls = [];
@@ -31,15 +32,9 @@
 	function init() {
 		// hide the loader
 		$('.loader').addClass('hidden');
-
-		// Constants
-		var SELECTED_TAG_NAME = "selected";
-		var TAG_BG_COLOR = "#5ECF81";
-
 		// Rearranges the tag data array to descending order by the tag rating 
 		tagData.sort(descBy('tagRating'));
-
-
+		
 		// Append data to DOM 
 		var tagContainer = $('.tagContainer');
 		var templateTag = Handlebars.compile($("#template-tag").html());
@@ -166,7 +161,8 @@
 				{
 					tagName : newTagName,
 					tagRating : newTagRating,
-					bgColor : ColorManager.colorManager.shadeColor(TAG_BG_COLOR, (colorShader++)* 1.4)
+					// bgColor : ColorManager.colorManager.shadeColor(TAG_BG_COLOR, (colorShader++)* 1.4)
+					bgColor : ""
 				}
 			);
 		}
