@@ -64,7 +64,7 @@
 
 	}
 
-	//////// Utility Functions 
+	//////// Utility Functions ///////////////////////////////////////////////////////////////
 
 	/*
 	* Function : descBy(one of the property name of objects present in an array)
@@ -125,11 +125,23 @@
 		tagDOMEl.css('background-color', backgroundColor);
 	}
 
-	// Returns a new promise to get a new url
+	/*
+	* Function : getJSON(url to get json data from)
+	* ----------------------------------------------
+	* Returns a new promise to get data from supplied
+	* url
+	*/
 	function getJSON(url) {
 		return $.getJSON(url);
 	}
 
+	/* 
+	* Function : getTagPromise(url to obtain tag data) 
+	* --------------------------------------------------
+	* Returns a new promise object that resolves when 
+	* tag data from the url is loaded and pushed into
+	* tagData array
+	*/
 	function getTagPromise(tagUrl) {
 		return new Promise(function(resolve, reject) {
 			getJSON(tagUrl).then(function(response) {
@@ -143,9 +155,11 @@
 		});
 	}
 
-
-	var colorShader = 0;
-	// Pushes new data into the tagData Array, avoids duplicate data
+	/*
+	* Function : addNewTagData(rating of new tag, name of new tag) 
+	* --------------------------------------------------------------
+	* Pushes data into the tagData Array, avoid duplicate data
+	*/
 	var addNewTagData = function(newTagRating, newTagName) {
 		// firt we have to find if something related to the current tag is already present in the dataset
 		var checkIndex = NOT_FOUND;
