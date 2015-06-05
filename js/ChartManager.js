@@ -6,66 +6,62 @@
 	window.ChartManager.chartManager = new ChartManager();
 
 
-	// Holds Data objects of the chart
-	var chartData = [];
-
-	var chartOptions = {
-	    //Boolean - Whether we should show a stroke on each segment
-	    segmentShowStroke : true,
-
-	    //String - The colour of each segment stroke
-	    segmentStrokeColor : "#384047",
-
-	    //Number - The width of each segment stroke
-	    segmentStrokeWidth : 2,
-
-	    //Number - The percentage of the chart that we cut out of the middle
-	    percentageInnerCutout : 0, // This is 0 for Pie charts
-
-	    //Number - Amount of animation steps
-	    animationSteps : 100,
-
-	    //String - Animation easing effect
-	    animationEasing : "easeInOutQuint",
-
-	    //Boolean - Whether we animate the rotation of the Doughnut
-	    animateRotate : true,
-
-	    //Boolean - Whether we animate scaling the Doughnut from the centre
-	    animateScale : true,
-
-	    //String - A legend template
-	    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",
-
-	    tooltipTemplate: "<%if (label){%><%=label%><%}%>",
-
-	    showTooltips : false,
-
-	    tooltipFontFamily: "'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-
-	     // Number - Pixel radius of the tooltip border
-	    tooltipCornerRadius: 4,
-
-		// Array - Array of string names to attach tooltip events
-	    tooltipEvents: [""],
-
-	    onAnimationComplete: function(){
-	        this.showTooltip(this.segments, true);
-	    }
-
-	};
-
-	var chartView = document.getElementById("myChart");
-	var ctx = chartView.getContext("2d");
-	var pieChart = new Chart(ctx).Pie(chartData,chartOptions);
-
 	// Main Object to export
 	function ChartManager() {
+		// Holds Data objects of the chart
+		this.chartData = [];
 
+		this.chartView = document.getElementById("myChart");
+		this.ctx = this.chartView.getContext("2d");
+		this.pieChart = new Chart(this.ctx).Pie(this.chartData, {
+		    //Boolean - Whether we should show a stroke on each segment
+		    segmentShowStroke : true,
+
+		    //String - The colour of each segment stroke
+		    segmentStrokeColor : "#384047",
+
+		    //Number - The width of each segment stroke
+		    segmentStrokeWidth : 2,
+
+		    //Number - The percentage of the chart that we cut out of the middle
+		    percentageInnerCutout : 0, // This is 0 for Pie charts
+
+		    //Number - Amount of animation steps
+		    animationSteps : 100,
+
+		    //String - Animation easing effect
+		    animationEasing : "easeInOutQuint",
+
+		    //Boolean - Whether we animate the rotation of the Doughnut
+		    animateRotate : true,
+
+		    //Boolean - Whether we animate scaling the Doughnut from the centre
+		    animateScale : true,
+
+		    //String - A legend template
+		    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",
+
+		    tooltipTemplate: "<%if (label){%><%=label%><%}%>",
+
+		    showTooltips : false,
+
+		    tooltipFontFamily: "'Source Sans Pro', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+		     // Number - Pixel radius of the tooltip border
+		    tooltipCornerRadius: 4,
+
+			// Array - Array of string names to attach tooltip events
+		    tooltipEvents: [""],
+
+		    onAnimationComplete: function(){
+		        this.showTooltip(this.segments, true);
+		    }
+
+		});
 	}
 
 	ChartManager.prototype.getChartData = function() {
-		return chartData;
+		return this.chartData;
 	};
 
 	/*
@@ -81,19 +77,19 @@
 			highlight : "",
 			label : tagName
 		};
-		pieChart.addData(newData);
-		chartData.push(newData);
+		this.pieChart.addData(newData);
+		this.chartData.push(newData);
 	};
 
 	ChartManager.prototype.removeData = function(rmTagName) {
 		var removalIndex;
-		chartData.forEach(function(data,currentIndex) {
+		this.chartData.forEach(function(data,currentIndex) {
 			if(data.label === rmTagName) {
 				removalIndex = currentIndex;
 			}
 		});
-		chartData.splice(removalIndex, 1);
-		pieChart.removeData(removalIndex);
+		this.chartData.splice(removalIndex, 1);
+		this.pieChart.removeData(removalIndex);
 	};
 
 
