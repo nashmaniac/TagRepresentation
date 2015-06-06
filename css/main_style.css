@@ -39,8 +39,7 @@ body, html {
   flex-wrap: wrap;
   align-items: flex-start;
   align-content: flex-start;
-  float: left;
-  overflow-y: scroll; }
+  float: left; }
 
 .chartContainer {
   margin-left: 50%;
