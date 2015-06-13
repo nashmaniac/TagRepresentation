@@ -35,6 +35,10 @@
 		// Rearranges the tag data array to descending order by the tag rating 
 		tagData.sort(descBy('tagRating'));
 		
+		// Once they are sorted we will go through each one of them assigning background color 
+		// with decreasing order of shade of TAG_BG_COLOR
+		shadeTags();
+		
 		// Append data to DOM 
 		var tagContainer = $('.tagContainer');
 		var templateTag = Handlebars.compile($("#template-tag").html());
@@ -160,6 +164,7 @@
 	* --------------------------------------------------------------
 	* Pushes data into the tagData Array, avoid duplicate data
 	*/
+	var colorShader = 0;
 	var addNewTagData = function(newTagRating, newTagName) {
 		// firt we have to find if something related to the current tag is already present in the dataset
 		var checkIndex = NOT_FOUND;
@@ -181,6 +186,15 @@
 			);
 		}
 
+	};
+
+	// Shades the tags in a Clear(R) app like fashion with tags with higer rating getting a 
+	// darker shade
+	function shadeTags() {
+		var shader = 0;
+		tagData.forEach(function(currentTagData) {
+			currentTagData.bgColor = ColorManager.colorManager.shadeColor(TAG_BG_COLOR, (shader++)* 1.4);
+		});
 	}
 
 
